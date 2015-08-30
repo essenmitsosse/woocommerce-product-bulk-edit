@@ -178,7 +178,7 @@ class Woocoomerce_Product_Bulk_Edit {
 		}
 	}
 
-	public static $imgValues = array( "farbe" );
+	public static $imgValues = array( "groesse", "farbe" );
 
 	public static $newValues = array(
 		"price" => array( "_regular_price", "_price" ),
@@ -188,36 +188,40 @@ class Woocoomerce_Product_Bulk_Edit {
 		"length" => array( "_length" )
 	);
 
-	public static $valueCalc = array(
+	public static $valueCalculationRules = array(
 		"farbe" => array(
 			"dunkelgrau" => array( 
-				"price" => 9
+				"price" => 9,
+				"img" => "dunkelgrau"
 			),
 			"hellgrau" => array( 
 				"price" => 0,
-				"width" => 10
+				"img" => "hellgrau"
 			),
 			"weiss" => array( 
 				"price" => 1,
-				"weight" => 1000
+				"img" => "weiss"
 			)
 			),
 		"groesse" => array(
 			"13cm" => array(
-				"weight" => 10
+				"width" => 12,
+				"img" => "12"
 			),
 			"17cm" => array(
-				"weight" => 20,
-				"width" => 5
+				"width" => 12,
+				"img" => "12"
 			),
 			"21cm" => array( 
 				"weight" => 100,
-				"price" => 100 
+				"price" => 100, 
+				"width" => 43,
+				"img" => "43"
 			)
 		),
 		"base" => array(
 			"price" => 1000,
-			"width" => 10,
+			"width" => 0,
 			"height" => 10,
 			"length" => 10
 		)
@@ -225,22 +229,32 @@ class Woocoomerce_Product_Bulk_Edit {
 
 	public static function newThumb ( $variation ) {
 		$urlBase = "http://betoniu.dev/wp-content/uploads/";
-		$urlFileBase = "schale-43-";
-		$urlVariationValues = array();
+		$urlVariationValues = array( "schale" );
 		$urlEnding = ".jpg";
 
 		$attributes = $variation[ "attributes" ];
 		$id = $variation[ "variation_id" ];
 
+		$valueCalculationRules = self::$valueCalculationRules;
+
 		foreach ( self::$imgValues as $imgValue ) {
-			$img_attr_name = "attribute_pa_" . $imgValue;
+			$img_attr_name = "attribute_pa_".$imgValue;
 			if ( array_key_exists( $img_attr_name, $attributes ) ) {
-				$urlVariationValues[] = $attributes[ $img_attr_name ];
+				$currentValue = $attributes[ $img_attr_name ];
+
+				if ( 
+					array_key_exists( $imgValue, $valueCalculationRules ) &&
+					array_key_exists( $currentValue, $valueCalculationRules[ $imgValue ] ) &&
+					array_key_exists( "img", $valueCalculationRules[ $imgValue ][ $currentValue ] )
+				) {
+					$urlVariationValues[] = $valueCalculationRules[ $imgValue ][ $currentValue ][ "img" ];
+				}
+				
 			}
 		}
 		
 
-		$url = $urlFileBase . implode( "-", $urlVariationValues ) . $urlEnding;
+		$url = implode( "-", $urlVariationValues ) . $urlEnding;
 		$img_id = self::getImageIdFromUrl( $urlBase . $url );
 
 		self::addCell( $url );
@@ -257,15 +271,15 @@ class Woocoomerce_Product_Bulk_Edit {
 	}
 
 	public static function newValue ( $variation, $what, $database_names ) {
-		$valueCalc = self::$valueCalc;
+		$valueCalculationRules = self::$valueCalculationRules;
 		$attributes = self::$attributes;
 		$valueParts = array();
 
 		if ( 
-			array_key_exists( "base", $valueCalc ) &&
-			array_key_exists( $what, $valueCalc[ "base" ] )
+			array_key_exists( "base", $valueCalculationRules ) &&
+			array_key_exists( $what, $valueCalculationRules[ "base" ] )
 		) {
-			$base = $valueCalc[ "base" ][ $what ];
+			$base = $valueCalculationRules[ "base" ][ $what ];
 		} else {
 			$base = 0;
 		}
@@ -276,11 +290,11 @@ class Woocoomerce_Product_Bulk_Edit {
 		foreach ( $variation[ "attributes" ] as $key => $value ) {
 			$shortAttributeName = $attributes[ $key ];
 			if ( 
-				array_key_exists( $shortAttributeName, $valueCalc ) && 
-				array_key_exists( $value, $valueCalc[ $shortAttributeName ] ) && 
-				array_key_exists( $what, $valueCalc[ $shortAttributeName ][ $value ] ) 
+				array_key_exists( $shortAttributeName, $valueCalculationRules ) && 
+				array_key_exists( $value, $valueCalculationRules[ $shortAttributeName ] ) && 
+				array_key_exists( $what, $valueCalculationRules[ $shortAttributeName ][ $value ] ) 
 			) {
-				$valueParts[] = $valueCalc[ $shortAttributeName ][ $value ][ $what ];
+				$valueParts[] = $valueCalculationRules[ $shortAttributeName ][ $value ][ $what ];
 			} else {
 				$valueParts[] = "x";
 			}
