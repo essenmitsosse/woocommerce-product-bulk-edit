@@ -117,6 +117,8 @@ class Woocoomerce_Product_Bulk_Edit {
 			echo "<th>NEW " . $key . "</th>";
 			// echo "<th>" . "new Price-Calculation" . "</th>";
 		}
+		echo "<th>thumb url</th>";
+		echo "<th>thumb id</th>";
 		echo "</tr>";
 	}
 
@@ -170,10 +172,13 @@ class Woocoomerce_Product_Bulk_Edit {
 			foreach ( self::$newValues as $key => $value ) {
 				self::newValue( $variation, $key, $value );
 			}
+			self::newThumb( $variation );
 			echo "</tr>";
 			// print_r($value);
 		}
 	}
+
+	public static $imgValues = array( "farbe" );
 
 	public static $newValues = array(
 		"price" => array( "_regular_price", "_price" ),
@@ -186,7 +191,7 @@ class Woocoomerce_Product_Bulk_Edit {
 	public static $valueCalc = array(
 		"farbe" => array(
 			"dunkelgrau" => array( 
-				"price" => 9 
+				"price" => 9
 			),
 			"hellgrau" => array( 
 				"price" => 0,
@@ -217,6 +222,39 @@ class Woocoomerce_Product_Bulk_Edit {
 			"length" => 10
 		)
 	);
+
+	public static function newThumb ( $variation ) {
+		$urlBase = "http://betoniu.dev/wp-content/uploads/";
+		$urlFileBase = "schale-43-";
+		$urlVariationValues = array();
+		$urlEnding = ".jpg";
+
+		$attributes = $variation[ "attributes" ];
+		$id = $variation[ "variation_id" ];
+
+		foreach ( self::$imgValues as $imgValue ) {
+			$img_attr_name = "attribute_pa_" . $imgValue;
+			if ( array_key_exists( $img_attr_name, $attributes ) ) {
+				$urlVariationValues[] = $attributes[ $img_attr_name ];
+			}
+		}
+		
+
+		$url = $urlFileBase . implode( "-", $urlVariationValues ) . $urlEnding;
+		$img_id = self::getImageIdFromUrl( $urlBase . $url );
+
+		self::addCell( $url );
+		self::addCell( $img_id );
+
+		if( self::$update && $id > 0 ) {
+			if ( $img_id > 0 ) {
+				update_post_meta( $id, "_thumbnail_id", $img_id );
+		
+			} else {
+				"no image found with url " . $url;
+			}
+		}
+	}
 
 	public static function newValue ( $variation, $what, $database_names ) {
 		$valueCalc = self::$valueCalc;
@@ -293,7 +331,12 @@ class Woocoomerce_Product_Bulk_Edit {
 	public static function getImageIdFromUrl ( $image_url ) {
 		global $wpdb;
 		$attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_url )); 
-		return $attachment[0]; 
+		if( array_key_exists( 0 , $attachment ) ) {
+			return $attachment[0];
+		} else {
+			return "&mdash;";
+		}
+		 
 	}
 
 } // end class
