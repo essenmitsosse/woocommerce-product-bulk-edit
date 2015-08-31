@@ -91,20 +91,6 @@ $calc_rules = array(
 	"base" => array(
 		"img"    => "schale"
 	),
-	// "rule_out" => array(
-	// 	array(
-	// 		"farbe"   => "weiss",
-	// 		"groesse" => "21cm"
-	// 	)
-	// ),
-	// "rule_in" => array(
-	// 	array(
-	// 		"attribute"       => "farbe",
-	// 		"value"           => "dunkelgrau",
-	// 		"only_attribute"  => "groesse",
-	// 		"only_values"     => array( "13cm", "17cm" )
-	// 	),
-	// ),
 	"id" => 422,
 	"image_name_parts" => array( "farbe", "groesse" ),
 	"values_to_change" => array(

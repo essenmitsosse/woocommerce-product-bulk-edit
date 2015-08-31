@@ -240,7 +240,7 @@ class Woocoomerce_Product_Bulk_Edit {
 			endforeach;
 		endif;
 
-		if( array_key_exists( "rule_out", self::$calc_rules ) ) :
+		if( array_key_exists( "rule_in", self::$calc_rules ) ) :
 			foreach ( self::$calc_rules[ "rule_in" ] as $rule ) :
 				if ( $is_possible ) :
 					if ( $attributes[ "attribute_pa_" . $rule[ "attribute" ] ] === $rule[ "value" ] ) :
