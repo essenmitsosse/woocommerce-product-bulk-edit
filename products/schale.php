@@ -106,7 +106,7 @@ $calc_rules = array(
 	// 	),
 	// ),
 	"id" => 422,
-	"image_name_parts" => array( "groesse", "farbe" ),
+	"image_name_parts" => array( "farbe", "groesse" ),
 	"values_to_change" => array(
 		"price" => array( "_regular_price", "_price" ),
 		"weight" => array( "_weight" ),
