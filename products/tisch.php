@@ -24,7 +24,7 @@ $calc_rules = array(
 			"price"  => 80
 		)
 	),
-	"gestellfarbe" => array(
+	"gestell" => array(
 		"kein-gestell" => array(),
 		"blau"         => array(
 			"height"   => 90,
@@ -105,19 +105,19 @@ $calc_rules = array(
 	// "rule_out" => array(
 	// 	array(
 	// 		"gestellgroesse"   => "240x100cm",
-	// 		"gestellfarbe" => array( "schwarz", "blau", "weiss", "blutorange", "metall" )
+	// 		"gestell" => array( "schwarz", "blau", "weiss", "blutorange", "metall" )
 	// 	)
 	// ),
 	"rule_in" => array(
 		array(
 			"attribute"       => "plattengroesse",
 			"value"           => "240x100cm",
-			"only_attribute"  => "gestellfarbe",
+			"only_attribute"  => "gestell",
 			"only_values"     => array( "kein-gestell" )
 		),
 	),
 	"id" => 532,
-	"image_name_parts" => array( "gestellfarbe", "farbe", "plattengroesse" ),
+	"image_name_parts" => array( "gestell", "farbe", "plattengroesse" ),
 	"values_to_change" => array(
 		"price" => array( "_regular_price", "_price" ),
 		"weight" => array( "_weight" ),
