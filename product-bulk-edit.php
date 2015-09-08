@@ -265,7 +265,7 @@ class Woocoomerce_Product_Bulk_Edit {
 	}
 
 	public static function newThumb ( $variation ) {
-		$urlBase = "http://betoniu.dev/wp-content/uploads/";
+		$urlBase = wp_upload_dir()[ 'baseurl' ] . "/";
 		$urlVariationValues = array();
 		$urlEnding = ".jpg";
 

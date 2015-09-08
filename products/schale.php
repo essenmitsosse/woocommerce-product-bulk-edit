@@ -71,7 +71,7 @@ $calc_rules = array(
 			"price"  => 298,
 			"img"    => "43"
 		),
-		"4er-set" => array(
+		"3er-set" => array(
 			"img"    => "set",
 			"weight" => 1.5,
 			"width"  => 12,
@@ -92,7 +92,7 @@ $calc_rules = array(
 		"img"    => "schale"
 	),
 	"id" => 422,
-	"image_name_parts" => array( "farbe", "groesse" ),
+	"image_name_parts" => array( "groesse", "farbe" ),
 	"values_to_change" => array(
 		"price" => array( "_regular_price", "_price" ),
 		"weight" => array( "_weight" ),

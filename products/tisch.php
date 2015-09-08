@@ -2,6 +2,8 @@
 
 global $calc_rules;
 
+$shipping = 148;
+
 $calc_rules = array(
 	"farbe" => array(		
 		"hellgrau" => array( 
@@ -9,51 +11,56 @@ $calc_rules = array(
 		),
 		"dunkelgrau" => array( 
 			"img"    => "dunkelgrau",
-			"price"  => 100
+			"price"  => 98
 		),
 		"weiss" => array(
 			"img"    => "weiss",
-			"price"  => 100
+			"price"  => 98
 		)
 	),
-	"versiegelung" => array(		
+	"versiegelung" => array(
+		"lithofin" => array(
+			"price"  => 48
+		),
 		"gewachst" => array(
-			"price"  => 80 
+			"price"  => 98 
 		),
 		"nanoclear" => array(
-			"price"  => 80
+			"price"  => 98
 		)
 	),
 	"gestell" => array(
-		"kein-gestell" => array(),
+		"kein-gestell" => array(
+			"img"      => "platte"
+		),
 		"blau"         => array(
 			"height"   => 90,
 			"weight"   => 7,
-			"price"    => 200,
+			"price"    => 300,
 			"img"      => "blau"
 		),
 		"weiss"         => array(
 			"height"   => 90,
 			"weight"   => 7,
-			"price"    => 200,
+			"price"    => 300,
 			"img"      => "weiss"
 		),
 		"schwarz"         => array(
 			"height"   => 90,
 			"weight"   => 7,
-			"price"    => 200,
+			"price"    => 300,
 			"img"      => "schwarz"
 		),
 		"blutorange"         => array(
 			"height"   => 90,
 			"weight"   => 7,
-			"price"    => 200,
+			"price"    => 300,
 			"img"      => "blutorange"
 		),
 		"metall"         => array(
 			"height"   => 90,
 			"weight"   => 7,
-			"price"    => 200,
+			"price"    => 300,
 			"img"      => "metall"
 		)
 	),
@@ -63,7 +70,7 @@ $calc_rules = array(
 			"width"  => 100,
 			"length" => 100,
 			"height" => 4,
-			"price"  => 598,
+			"price"  => 598 + $shipping,
 			"img"    => "100"
 		),
 		"160x80cm" => array(
@@ -71,7 +78,7 @@ $calc_rules = array(
 			"width"  => 80,
 			"length" => 160,
 			"height" => 4,
-			"price"  => 698,
+			"price"  => 698 + $shipping,
 			"img"    => "160"
 		),
 		"180x90cm" => array(
@@ -79,7 +86,7 @@ $calc_rules = array(
 			"width"  => 90,
 			"length" => 180,
 			"height" => 4,
-			"price"  => 798,
+			"price"  => 798 + $shipping,
 			"img"    => "180"
 		),
 		"200x100cm" => array(
@@ -87,7 +94,7 @@ $calc_rules = array(
 			"width"  => 100,
 			"length" => 200,
 			"height" => 4,
-			"price"  => 898,
+			"price"  => 989 + $shipping,
 			"img"    => "200"
 		),
 		"240x100cm" => array(
@@ -95,7 +102,7 @@ $calc_rules = array(
 			"width"  => 100,
 			"length" => 240,
 			"height" => 4,
-			"price"  => 1298,
+			"price"  => 1298 + $shipping,
 			"img"    => "240"
 		)
 	),
@@ -117,7 +124,7 @@ $calc_rules = array(
 		),
 	),
 	"id" => 532,
-	"image_name_parts" => array( "gestell", "farbe", "plattengroesse" ),
+	"image_name_parts" => array( "gestell", "farbe" ),
 	"values_to_change" => array(
 		"price" => array( "_regular_price", "_price" ),
 		"weight" => array( "_weight" ),
