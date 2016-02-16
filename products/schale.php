@@ -12,8 +12,14 @@ $calc_rules = array(
 		),
 		"weiss" => array(
 			"img"    => "weiss"
-		)
 		),
+		"rot" => array(
+			"img" => "rot"
+		),
+		"gruen" => array(
+			"img" => "gruen"
+		)
+	),
 	"groesse" => array(
 		"12cm" => array(
 			"weight" => 0.26,
@@ -90,6 +96,26 @@ $calc_rules = array(
 	),
 	"base" => array(
 		"img"    => "schale"
+	),
+	"rule_in" => array(
+		array(
+			"attribute"       => "farbe",
+			"value"           => "rot",
+			"only_attribute"  => "groesse",
+			"only_values"     => array( "12cm", "14cm", "16cm", "3er-set" )
+		),
+		array(
+			"attribute"       => "farbe",
+			"value"           => "gruen",
+			"only_attribute"  => "groesse",
+			"only_values"     => array( "12cm", "14cm", "16cm", "3er-set" )
+		),
+		array(
+			"attribute"       => "farbe",
+			"value"           => "gemischt-schale",
+			"only_attribute"  => "groesse",
+			"only_values"     => array( "3er-set" )
+		),
 	),
 	"id" => 422,
 	"image_name_parts" => array( "groesse", "farbe" ),

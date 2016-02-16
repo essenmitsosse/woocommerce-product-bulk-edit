@@ -145,24 +145,32 @@ class Woocoomerce_Product_Bulk_Edit {
 
 	public static function getProduct ( $product ) {
 		$variations = self::get_available_variations( $product );
-		$attributes = self::findAttributes( $variations[ 0 ] );
-
-		usort( $variations, array( 'Woocoomerce_Product_Bulk_Edit', 'sortVariations' ) );	
 
 		echo "<form action=\"" . $_SERVER['PHP_SELF'] . "?page=product_bluk_edit" . "\" method=\"post\">";
 		echo "<h1>" . $product->post->post_title . "</h1>";
-		echo "<table>";
+
+		if ( $variations ) {
+			$attributes = self::findAttributes( $variations[ 0 ] );
+
+			usort( $variations, array( 'Woocoomerce_Product_Bulk_Edit', 'sortVariations' ) );	
+
+			echo "<table>";
 		
-		self::getTableHead();
+			self::getTableHead();
 
-		self::loopVariations( $variations );
+			self::loopVariations( $variations );
 
-		echo "</table>";
+			echo "</table>";
+		} else {
+			echo "no variations yet. create some variations for the product first";
+		}
+
 		echo "<input type=\"submit\" value=\"Submit\">";
 		echo "<input type=\"hidden\" name=\"id\" value=\"" . $product->id . "\">";
 		echo "<input type=\"hidden\" name=\"name\" value=\"" . $_REQUEST[ "name" ] . "\">";
 		echo "<input type=\"hidden\" name=\"update\" value=\"TRUE\">";
 		echo "</form>";
+		
 	}
 
 	public static function sortVariations ( $a, $b ) {
@@ -307,6 +315,26 @@ class Woocoomerce_Product_Bulk_Edit {
 		self::add_values_to_the_database( $variation,$img_id, "_thumbnail_id" );
 	}
 
+	public static function getChangedValue( $valueInfo, $attributes ) {
+		$finalValue = 0;
+
+		if( array_key_exists( "_base" , $valueInfo ) ) {
+			$finalValue = $valueInfo[ "_base" ];
+		} else {
+			echo "no base value for this.";
+			print_r($valueInfo);
+		}
+
+		foreach ( $attributes as $key => $value ) {
+			$shortKey = str_replace( "attribute_pa_", "", $key );
+			if( array_key_exists( $shortKey , $valueInfo ) && array_key_exists( $value, $valueInfo[ $shortKey ] ) ) {
+				$finalValue += $valueInfo[ $shortKey ][ $value ];
+			}
+		}
+
+		return $finalValue;
+	}
+
 	public static function newValue ( $variation, $what, $database_names ) {
 		$calc_rules = self::$calc_rules;
 		$attributes = self::$attributes;
@@ -331,7 +359,11 @@ class Woocoomerce_Product_Bulk_Edit {
 				array_key_exists( $value, $calc_rules[ $shortAttributeName ] ) && 
 				array_key_exists( $what, $calc_rules[ $shortAttributeName ][ $value ] ) 
 			) {
-				$valueParts[] = $calc_rules[ $shortAttributeName ][ $value ][ $what ];
+				if( is_array( $calc_rules[ $shortAttributeName ][ $value ][ $what ] ) ) {
+					$valueParts[] = self::getChangedValue( $calc_rules[ $shortAttributeName ][ $value ][ $what ], $variation[ "attributes" ] );
+				} else {
+					$valueParts[] = $calc_rules[ $shortAttributeName ][ $value ][ $what ];
+				}
 			} else {
 				$valueParts[] = "x";
 			}

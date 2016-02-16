@@ -34,31 +34,31 @@ $calc_rules = array(
 			"img"      => "platte"
 		),
 		"blau"         => array(
-			"height"   => 90,
+			"height"   => 72,
 			"weight"   => 7,
 			"price"    => 300,
 			"img"      => "blau"
 		),
 		"weiss"         => array(
-			"height"   => 90,
+			"height"   => 72,
 			"weight"   => 7,
 			"price"    => 300,
 			"img"      => "weiss"
 		),
 		"schwarz"         => array(
-			"height"   => 90,
+			"height"   => 72,
 			"weight"   => 7,
 			"price"    => 300,
 			"img"      => "schwarz"
 		),
 		"blutorange"         => array(
-			"height"   => 90,
+			"height"   => 72,
 			"weight"   => 7,
 			"price"    => 300,
 			"img"      => "blutorange"
 		),
 		"metall"         => array(
-			"height"   => 90,
+			"height"   => 72,
 			"weight"   => 7,
 			"price"    => 300,
 			"img"      => "metall"
