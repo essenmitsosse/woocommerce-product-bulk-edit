@@ -1,18 +1,18 @@
-<?php 
+<?php
 
 global $calc_rules;
 
 $calc_rules = array(
 	"farbe" => array(
-		"dunkelgrau" => array( 
+		"dunkelgrau" => array(
 			"price"  => 9,
 			"img"    => "dunkelgrau"
 		),
-		"hellgrau" => array( 
+		"hellgrau" => array(
 			"price"  => 0,
 			"img"    => "hellgrau"
 		),
-		"weiss" => array( 
+		"weiss" => array(
 			"price"  => 1,
 			"img"    => "weiss"
 		)
@@ -26,9 +26,9 @@ $calc_rules = array(
 			"width"  => 12,
 			"img"    => "12"
 		),
-		"21cm" => array( 
+		"21cm" => array(
 			"weight" => 100,
-			"price"  => 100, 
+			"price"  => 100,
 			"width"  => 43,
 			"img"    => "43"
 		)

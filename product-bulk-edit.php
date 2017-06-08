@@ -10,25 +10,26 @@
  * Last Change:     30.08.2015 4:00
  */
 
-if ( ! defined( "ABSPATH" ) ) {
-	exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
 }
 
 class Woocoomerce_Product_Bulk_Edit {
 
 	/**
-     * Plugin version
-     * @var string
-     */
-    static public $version = "1.0.0";
+	 * Plugin version
+	 *
+ 	 * @var string
+ 	 */
+	static public $version = '1.0.0';
 
-    	/**
-	* Creates an Instance of this Class
-	*
-	* @access public
-	* @since 1.0.0
-	* @return Woocommerce_Variations_With_Radio_Buttons
-	*/
+	/**
+	 * Creates an Instance of this Class
+	 *
+	 * @access public
+	 * @since 1.0.0
+	 * @return Woocommerce_Variations_With_Radio_Buttons
+	 */
 	public static function get_instance() {
 
 		if ( NULL === self::$instance )
@@ -38,30 +39,30 @@ class Woocoomerce_Product_Bulk_Edit {
 	}
 
 	/**
-     * Singleton object holder
-     * @var mixed
-     */
-    static private $instance = NULL;
+	 * Singleton object holder
+	 * @var mixed
+	 */
+	static private $instance = NULL;
 
 	public static $calc_rules;
 
 	public static $tableCols = array(
-		"variation_id"          => array(
-				"niceName"           => "ID"
+		'variation_id'          => array(
+				'niceName'           => 'ID'
 			),
-		"variation_is_active"   => array(
-				"niceName"           => "is Active"
+		'variation_is_active'   => array(
+				'niceName'           => 'is Active'
 			),
-		"display_price"         => array(
-				"niceName"           => "Price",
-				"input"              => "number"
+		'display_price'         => array(
+				'niceName'           => 'Price',
+				'input'              => 'number'
 			),
-		"weight"                => array(
-				"niceName"           => "Weight",
-				"func"               => "get_weight"
+		'weight'                => array(
+				'niceName'           => 'Weight',
+				'func'               => 'get_weight'
 			),
-		"dimensions"            => array(
-				"niceName"           => "Dimensions"
+		'dimensions'            => array(
+				'niceName'           => 'Dimensions'
 			)
 	);
 
@@ -71,7 +72,7 @@ class Woocoomerce_Product_Bulk_Edit {
 	}
 
 	public static function bulk_edit_menu() {
-		add_submenu_page( 'woocommerce', 'Bulk Edit', 'Bulk Edit Products', 'manage_options', 'product_bluk_edit', array( "Woocoomerce_Product_Bulk_Edit", 'bulk_edit_options' ) ); 
+		add_submenu_page( 'woocommerce', 'Bulk Edit', 'Bulk Edit Products', 'manage_options', 'product_bluk_edit', array( "Woocoomerce_Product_Bulk_Edit", 'bulk_edit_options' ) );
 	}
 
 	public static $attributes = array();
@@ -104,17 +105,15 @@ class Woocoomerce_Product_Bulk_Edit {
 			if ( self::$calc_rules[ "id"] == $id ) {
 				$product = get_product( $id );
 
-
-
 				if ( $product->product_type == 'variable') {
 					self::getProduct( $product );
 				} else {
 					echo "product is not a variable product";
-				}	
+				}
 			} else {
 				echo "wrong product id. given: " . $id . ". should be: " . self::$calc_rules[ "id" ];
 			}
-					
+
 		} else {
 			echo "no ID specified";
 		}
@@ -152,10 +151,10 @@ class Woocoomerce_Product_Bulk_Edit {
 		if ( $variations ) {
 			$attributes = self::findAttributes( $variations[ 0 ] );
 
-			usort( $variations, array( 'Woocoomerce_Product_Bulk_Edit', 'sortVariations' ) );	
+			usort( $variations, array( 'Woocoomerce_Product_Bulk_Edit', 'sortVariations' ) );
 
 			echo "<table>";
-		
+
 			self::getTableHead();
 
 			self::loopVariations( $variations );
@@ -170,7 +169,7 @@ class Woocoomerce_Product_Bulk_Edit {
 		echo "<input type=\"hidden\" name=\"name\" value=\"" . $_REQUEST[ "name" ] . "\">";
 		echo "<input type=\"hidden\" name=\"update\" value=\"TRUE\">";
 		echo "</form>";
-		
+
 	}
 
 	public static function sortVariations ( $a, $b ) {
@@ -212,7 +211,7 @@ class Woocoomerce_Product_Bulk_Edit {
 	}
 
 	public static function loopVariations ( $variations ) {
-		
+
 		foreach ( $variations as $variation ) {
 			echo "<tr>";
 			self::getAttributes( $variation[ "attributes" ] );
@@ -244,7 +243,7 @@ class Woocoomerce_Product_Bulk_Edit {
 				endforeach;
 				if( $match ) :
 					$is_possible = false;
-				endif; 
+				endif;
 			endforeach;
 		endif;
 
@@ -277,9 +276,9 @@ class Woocoomerce_Product_Bulk_Edit {
 		$urlVariationValues = array();
 		$urlEnding = ".jpg";
 
-		if( 
+		if(
 			array_key_exists( "base", self::$calc_rules ) &&
-			array_key_exists( "img", self::$calc_rules[ "base"] ) 
+			array_key_exists( "img", self::$calc_rules[ "base"] )
 		) {
 			$urlVariationValues[] = self::$calc_rules[ "base"][ "img" ];
 		}
@@ -294,17 +293,17 @@ class Woocoomerce_Product_Bulk_Edit {
 			if ( array_key_exists( $img_attr_name, $attributes ) ) {
 				$currentValue = $attributes[ $img_attr_name ];
 
-				if ( 
+				if (
 					array_key_exists( $imgValue, $calc_rules ) &&
 					array_key_exists( $currentValue, $calc_rules[ $imgValue ] ) &&
 					array_key_exists( "img", $calc_rules[ $imgValue ][ $currentValue ] )
 				) {
 					$urlVariationValues[] = $calc_rules[ $imgValue ][ $currentValue ][ "img" ];
 				}
-				
+
 			}
 		}
-		
+
 
 		$url = implode( "-", $urlVariationValues ) . $urlEnding;
 		$img_id = self::getImageIdFromUrl( $urlBase . $url );
@@ -340,7 +339,7 @@ class Woocoomerce_Product_Bulk_Edit {
 		$attributes = self::$attributes;
 		$valueParts = array();
 
-		if ( 
+		if (
 			array_key_exists( "base", $calc_rules ) &&
 			array_key_exists( $what, $calc_rules[ "base" ] )
 		) {
@@ -348,16 +347,16 @@ class Woocoomerce_Product_Bulk_Edit {
 		} else {
 			$base = 0;
 		}
-		
+
 
 		$valueParts[] = $base;
 
 		foreach ( $variation[ "attributes" ] as $key => $value ) {
 			$shortAttributeName = $attributes[ $key ];
-			if ( 
-				array_key_exists( $shortAttributeName, $calc_rules ) && 
-				array_key_exists( $value, $calc_rules[ $shortAttributeName ] ) && 
-				array_key_exists( $what, $calc_rules[ $shortAttributeName ][ $value ] ) 
+			if (
+				array_key_exists( $shortAttributeName, $calc_rules ) &&
+				array_key_exists( $value, $calc_rules[ $shortAttributeName ] ) &&
+				array_key_exists( $what, $calc_rules[ $shortAttributeName ][ $value ] )
 			) {
 				if( is_array( $calc_rules[ $shortAttributeName ][ $value ][ $what ] ) ) {
 					$valueParts[] = self::getChangedValue( $calc_rules[ $shortAttributeName ][ $value ][ $what ], $variation[ "attributes" ] );
@@ -387,7 +386,7 @@ class Woocoomerce_Product_Bulk_Edit {
 		}
 
 		self::addCell( $value );
-		
+
 	}
 
 	public static function getAttributes ( $attr ) {
@@ -415,7 +414,7 @@ class Woocoomerce_Product_Bulk_Edit {
 				else :
 					self::add_single_value_to_the_database( $id, $newValue, $database_names );
 				endif;
-				
+
 			else :
 				if ( is_array( $database_names ) ) :
 					echo "<strong stlye=\"color:#f00;\">something wrong with " . implode( ", ", $database_names ) . " of ID: " . $id . "</strong></br>";
@@ -433,13 +432,13 @@ class Woocoomerce_Product_Bulk_Edit {
 
 	public static function getImageIdFromUrl ( $image_url ) {
 		global $wpdb;
-		$attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_url )); 
+		$attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_url ));
 		if( array_key_exists( 0 , $attachment ) ) {
 			return $attachment[0];
 		} else {
 			return 0;
 		}
-		 
+
 	}
 
 } // end class
